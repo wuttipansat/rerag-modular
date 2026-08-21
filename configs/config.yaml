@@ -1,0 +1,49 @@
+project:
+  name: ReRag
+  version: 0.1.0
+
+paths:
+  raw_data: data/raw
+  processed_data: data/processed
+  vector_store: storage/chroma
+  evaluation_data: data/evaluation
+
+ingestion:
+  supported_extensions:
+    - .pdf
+
+  skep_empty_pages: True
+  save_processed_data: True
+
+chunking:
+  strategy: recursive
+  chunk_size: 800
+  chunk_overlap: 150
+  separators:
+  - "\n\n"
+  - "\n"
+  - ". "
+  - " "
+  - ""
+
+embedding:
+  provider: sentence_transformers
+  model_name: intfloat/multilingual-e5-base
+  device: cpu
+  batch_size: 32
+  normalize_embedding: true
+  document_prefix: "passage: "
+  query_prefix: "query: "
+
+vector_store:
+  provider: chroma
+  collection_name: documents
+  distance_metric: cosine
+  persist_directory: storage/chroma
+
+retrieval:
+  top_k: 5
+  score_threshold: null
+
+logging:
+  level: INFO
