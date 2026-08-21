@@ -34,4 +34,12 @@ def load_config(
 
     return config
 
-config = load_config()
+def resolve_path(path: str | Path) -> Path:
+    """Convert a configured relative path to an absolute path."""
+
+    path = Path(path)
+
+    if path.is_absolute():
+        return path
+
+    return PROJECT_ROOT / path
